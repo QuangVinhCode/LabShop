@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+
+<body>
+	<h1 th:if="${product.id != null}">Edit Product</h1>
+	<h1 th:if="${product.id == null}">New Product</h1>
+	<hr />
+	<a th:href="@{/products}">List of Products</a>
+	<hr />
+	<form th:action="@{/products/saveOrUpdate}" method="post" th:object="${product}">
+		<div th:if="${product.id != null}">
+			Product ID:
+			<input type="text" placeholder="Product ID" th:field="*{id}" readonly>
+			<br />
+		</div>
+
+		Category:
+		<select th:field="*{category.id}">
+			<option th:each="item : ${categories}" th:value="${item.id}" th:text="${item.name}"></option>
+		</select>
+		<br />
+		Name:
+		<input type="text" placeholder="Name" th:field="*{name}" />
+		<br />
+		<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:class="${#fields.hasErrors('name')}? error"></p>
+		<br />
+		Price:
+		<input type="number" placeholder="Price" th:field="*{price}" />
+		<br />
+		<p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" th:class="${#fields.hasErrors('price')}? error"></p>
+		<br />
+		Quantily:
+		<input type="number" placeholder="Quantily" th:field="*{quantily}" />
+		<br />
+		<p th:if="${#fields.hasErrors('quantily')}" th:errors="*{quantily}" th:class="${#fields.hasErrors('quantily')}? error"></p>
+		<br />
+		Discount:
+		<input type="number" placeholder="Discount" th:field="*{discount}" />
+		<br />
+		<p th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}" th:class="${#fields.hasErrors('discount')}? error"></p>
+		<br />
+		Status:
+		<select th:field="*{status}">
+			<option th:each="state : ${T(com.edu.shop.model.ProductStatus).values()}" th:value="${state}"
+				th:text="${state}"></option>
+		</select>
+		<br />
+		<input type="submit" value="Save" th:if="${product.id == null}" />
+		<input type="submit" value="Update" th:if="${product.id != null}" />
+		<ul>
+			<li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
+		</ul>
+	</form>
+
+</body>
+
+</html>

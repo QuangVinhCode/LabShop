@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+
+<body>
+	<h1>List of category</h1>
+	<hr />
+	<a th:href="@{/categories/newOrEdit}">New Category</a>
+	<hr />
+	<div th:if="${message != null}">
+		<h3 th:text="${message}"></h3>
+	</div>
+	<table>
+		<tr>
+			<td>Category ID</td>
+			<td>Name</td>
+			<td></td>
+		</tr>
+		<tr th:each="item : ${pages.content}">
+			<td th:text="${item.id}"></td>
+			<td th:text="${item.name}"></td>
+			<td>
+				<a th:href="@{'/categories/newOrEdit/' + ${item.id}}">Edit</a>
+				<a th:href="@{'/categories/delete/' + ${item.id}}">Delete</a>
+			</td>
+		</tr>
+	</table>
+	<hr />
+		<div>
+			Pages:<span th:each="i : ${#numbers.sequence(0,pages.totalPages - 1)}">
+				<a th:href="@{/categories/paginate(page=${i},size=${pages.size},sort=${sort})}"
+				th:text="${i + 1}"></a>
+			</span>
+		</div>
+	<hr />
+	<form th:action="@{/categories/paginate}">
+		<select name="sort">
+			<option value="id">Id</option>
+			<option value="name">Name</option>
+		</select>
+		<input type="submit" value="Sort" />
+	</form>
+</body>
+
+</html>
